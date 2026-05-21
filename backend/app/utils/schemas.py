@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 
 class CompareRequest(BaseModel):
@@ -11,6 +11,8 @@ class ListingSchema(BaseModel):
     price: float
     seller: str
     source: str
+    site: str
+    link: Optional[str] = None
 
 
 class MarketMaturitySchema(BaseModel):
@@ -37,6 +39,10 @@ class CompareResponse(BaseModel):
     confidence: float
     reason: str
     conclusion: str
+    sale_event: Optional[str] = None
+    major_site_listings: List[ListingSchema] = Field(default_factory=list)
+    local_market_listings: List[ListingSchema] = Field(default_factory=list)
+    other_listings: List[ListingSchema] = Field(default_factory=list)
     listings: List[ListingSchema]
     market_maturity: MarketMaturitySchema
     price_analysis: PriceAnalysisSchema

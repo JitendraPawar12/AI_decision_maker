@@ -17,7 +17,7 @@ def compare_product(request: CompareRequest):
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
 
-    listings = fetch_shopping_listings(product)
+    listings, sale_event, major_site_listings, local_market_listings, other_listings = fetch_shopping_listings(product)
     if not listings:
         raise HTTPException(status_code=404, detail="No shopping listings found for this product.")
 
@@ -44,6 +44,10 @@ def compare_product(request: CompareRequest):
         "confidence": decision_output["confidence"],
         "reason": decision_output["reason"],
         "conclusion": conclusion,
+        "sale_event": sale_event,
+        "major_site_listings": [listing.dict() for listing in major_site_listings],
+        "local_market_listings": [listing.dict() for listing in local_market_listings],
+        "other_listings": [listing.dict() for listing in other_listings],
         "listings": [listing.dict() for listing in listings],
         "market_maturity": market_maturity,
         "price_analysis": decision_output["price_analysis"],

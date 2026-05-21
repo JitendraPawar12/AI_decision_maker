@@ -24,7 +24,8 @@ export default function HomePage() {
       const response = await compareProduct(product.trim());
       setResult(response);
     } catch (err) {
-      setError(err?.response?.data?.detail || "Unable to fetch recommendation.");
+      const detail = err?.response?.data?.detail;
+      setError(detail || err?.message || "Unable to fetch recommendation.");
     } finally {
       setLoading(false);
     }
